@@ -19,7 +19,7 @@ type Customer {
   username: String
   orders: [Order] @relationship(type: "PLACED", direction: OUT)
   reviews: [Review] @relationship(type: "WROTE", direction: OUT)
-  recommended(limit: Int = 3): [Book] @cypher(statement: "MATCH (this)-[:PLACED]->(:Order)-[:CONTAINS]->(:Book)<-[:CONTAINS]-(:Order)<-[:PLACED]-(c:Customer) MATCH (c)-[:PLACED]->(:Order)-[:CONTAINS]->(rec:Book) WHERE NOT EXISTS((this)-[:PLACED]->(:Order)-[:CONTAINS]->(rec)) RETURN rec LIMIT $limit")
+  recommended(limit: Int = 3): [Book] @cypher(statement: "MATCH (this)-[:PLACED]->(:Order)-[:CONTAINS]->(:Book)<-[:CONTAINS]-(:Order)<-[:PLACED]-(c:Customer) MATCH (c)-[:PLACED]->(:Order)-[:CONTAINS]->(rec:Book) WHERE NOT EXISTS((this)-[:PLACED]->(:Order)-[:CONTAINS]->(rec)) RETURN rec LIMIT toInteger($limit)")
 }
 
 extend type Customer @auth(rules: [{where: {username: "$jwt.sub"}}])
@@ -36,9 +36,9 @@ extend type Address {
 }
 
 type Weather {
-  temperature: Int
-  windSpeed: Int
-  windDirection: Int
+  temperature: Float
+  windSpeed: Float
+  windDirection: String
   precipitation: String
   summary: String
 }
@@ -58,13 +58,9 @@ extend type Book @auth(rules: [{operations: [CREATE, UPDATE, DELETE], roles: ["a
 
 extend type Book {
   similar: [Book] @cypher(statement: """
-  MATCH (this)-[:ABOUT]->(s:Subject)
-  WITH this, COLLECT(id(s)) AS s1
-  MATCH (b:Book)-[:ABOUT]->(s:Subject) WHERE b <> this
-  WITH this, b, s1, COLLECT(id(s)) AS s2
-  WITH b, gds.alpha.similarity.jaccard(s2, s2) AS jaccard
-  ORDER BY jaccard DESC
-  RETURN b LIMIT 1
+  MATCH (this)-[:ABOUT]->(s:Subject)<-[:ABOUT]-(rec:Book)
+  WITH rec, COUNT(*) AS num
+  RETURN rec ORDER BY num DESC
   """)
 }
 

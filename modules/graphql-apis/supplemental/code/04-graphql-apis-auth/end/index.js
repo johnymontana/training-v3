@@ -35,8 +35,7 @@ const neoSchema = new Neo4jGraphQL({
       secret: process.env.NEO4J_GRAPHQL_JWT_SECRET
     }
   },
-  resolvers,
-  debug: true
+  resolvers
 });
 
 // Create Neo4j driver instance

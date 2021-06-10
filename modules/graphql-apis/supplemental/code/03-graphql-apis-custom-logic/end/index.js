@@ -30,8 +30,7 @@ const resolvers = {
 // using @neo4j/graphql to autogenerate resolvers
 const neoSchema = new Neo4jGraphQL({
   typeDefs,
-  resolvers,
-  debug: true
+  resolvers
 });
 
 // Create Neo4j driver instance

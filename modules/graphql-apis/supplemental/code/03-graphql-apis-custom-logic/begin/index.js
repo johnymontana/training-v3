@@ -16,8 +16,7 @@ const typeDefs = fs
 // Create executable GraphQL schema from GraphQL type definitions,
 // using @neo4j/graphql to autogenerate resolvers
 const neoSchema = new Neo4jGraphQL({
-  typeDefs,
-  debug: true,
+  typeDefs
 });
 
 // Create Neo4j driver instance

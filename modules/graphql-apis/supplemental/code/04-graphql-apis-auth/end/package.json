@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js --watch .env --watch schema.graphql --watch index.js",
+    "start": "DEBUG=@neo4j/graphql:* nodemon index.js --watch .env --watch schema.graphql --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

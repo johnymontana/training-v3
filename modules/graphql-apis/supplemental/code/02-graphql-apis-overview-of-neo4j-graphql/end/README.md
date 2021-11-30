@@ -87,19 +87,19 @@ mutation {
     input: [
       {
         name: "Marty Cagan"
-        books: { connect: { where: { title: "Inspired" } } }
+        books: { connect: { where: { node: { title: "Inspired" } } }}
       }
       {
         name: "Winston Graham"
-        books: { connect: { where: { title: "Ross Poldark" } } }
+        books: { connect: { where: { node: { title: "Ross Poldark" } } }}
       }
       {
         name: "Mark Needham"
-        books: { connect: { where: { title: "Graph Algorithms" } } }
+        books: { connect: { where: { node:{ title: "Graph Algorithms" } } }}
       }
       {
         name: "Amy E. Hodler"
-        books: { connect: { where: { title: "Graph Algorithms" } } }
+        books: { connect: { where:{ node: { title: "Graph Algorithms" } }} }
       }
     ]
   ) {
@@ -121,7 +121,12 @@ There are a few different ways to approach this one, let's see how we can accomp
 mutation {
   inspired: updateBooks(
     where: { title: "Inspired" }
-    create: { subjects: [{ name: "Product management" }, { name: "Design" }] }
+    create: {
+      subjects: [
+        { node: { name: "Product management" } }
+        { node: { name: "Design" } }
+      ]
+    }
   ) {
     books {
       title
@@ -133,7 +138,12 @@ mutation {
 
   poldark: updateBooks(
     where: { title: "Ross Poldark" }
-    create: { subjects: [{ name: "Historical fiction" }, { name: "Cornwall" }] }
+    create: {
+      subjects: [
+        { node: { name: "Historical fiction" } }
+        { node: { name: "Cornwall" } }
+      ]
+    }
   ) {
     books {
       title
@@ -145,7 +155,12 @@ mutation {
 
   algorithms: updateBooks(
     where: { title: "Graph Algorithms" }
-    create: { subjects: [{ name: "Graph theory" }, { name: "Neo4j" }] }
+    create: {
+      subjects: [
+        { node: { name: "Graph theory" } }
+        { node: { name: "Neo4j" } }
+      ]
+    }
   ) {
     books {
       title

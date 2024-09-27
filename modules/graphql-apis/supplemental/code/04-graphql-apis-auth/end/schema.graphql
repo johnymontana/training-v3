@@ -13,7 +13,7 @@ extend type Order {
   estimatedDelivery: DateTime @ignore
 }
 
-extend type Order @auth(rules: [{allow: {customer: {username: "$jwt.sub"}}}, {roles: ["admin"]}])
+extend type Order @auth(rules: [{bind: {customer: {username: "$jwt.sub"}}}, {roles: ["admin"]}])
 
 type Customer {
   username: String
